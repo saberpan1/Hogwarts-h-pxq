@@ -1,6 +1,5 @@
 import pytest
 
-
 def setup_model():
     print("setup:整个py文件模块只执行一次")
 
