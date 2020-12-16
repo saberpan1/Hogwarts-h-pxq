@@ -1,10 +1,10 @@
 import pytest
 
-def setup_model():
+def setup_module():
     print("setup:整个py文件模块只执行一次")
 
 
-def teardown_model():
+def teardown_module():
     print("teardown:整个py文件模块只执行一次")
 
 

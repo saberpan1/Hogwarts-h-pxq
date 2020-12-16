@@ -1,6 +1,5 @@
 import pytest
 
-
 class Test_demo:
 
     @pytest.mark.demo
