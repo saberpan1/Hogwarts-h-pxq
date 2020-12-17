@@ -1,21 +1,41 @@
+from hogwartscalc.calc_work import Calc
 import pytest
-
-from pythoncode_pxq.calculator import Calculator
-
-
-@pytest.fixture(scope="function")
-def start():
-    Calc = Calculator()
-    print("开始计算")
-    return Calc
+import yaml
 
 
-class TestCal:
+def get_yml(name):
+    """
+    获取yaml的列表
+    :param name: yaml的key名称
+    :return: 返回指定列表
+    """
+    return yaml.safe_load(open("./data.yml"))[name]
 
-    @pytest.mark.parametrize("a,b,expect", [(1, 2, 3)], start)
-    def test_add(self, a, b, expect):
-        assert expect == self.cal.add(a, b)
 
-    @pytest.mark.parametrize("a,b,expect", [(3, 2, 1)])
-    def test_sub(self, a, b, expect):
-        assert expect == self.cal.sub(a, b)
+@pytest.mark.usefixtures("start", "calc")
+class Testcalc:
+
+    @pytest.mark.parametrize("a,b,expected",
+                             get_yml("add_datas"),
+                             ids=get_yml("myid"))
+    def test_add(self, a, b, expected, calc):
+        assert calc.add(a, b) == expected
+
+    @pytest.mark.parametrize("a,b,expected",
+                             get_yml("sub_datas"),
+                             ids=get_yml("myid"))
+    def test_sub(self, a, b, expected, calc):
+        assert calc.sub(a, b) == expected
+
+    @pytest.mark.parametrize("a,b,expected",
+                             get_yml("mul_datas"),
+                             ids=get_yml("myid"))
+    def test_mul(self, a, b, expected, calc):
+        assert calc.mul(a, b) == expected
+
+    @pytest.mark.run(order=-1)
+    @pytest.mark.parametrize("a,b,expected",
+                             get_yml("div_datas"),
+                             ids=get_yml("myid"))
+    def test_div(self, a, b, expected, calc):
+        assert calc.div(a, b) == expected
